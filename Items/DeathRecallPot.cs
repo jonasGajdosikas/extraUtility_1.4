@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent.Creative;
 using Microsoft.Xna.Framework;
 
 namespace extraUtility.Items
@@ -11,6 +12,7 @@ namespace extraUtility.Items
 		{
 			DisplayName.SetDefault("Grave Recall Potion"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
 			Tooltip.SetDefault("Drink the potion to return to your last death point");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 20;
 		}
 
 		public override void SetDefaults() 
@@ -27,7 +29,7 @@ namespace extraUtility.Items
 			CreateRecipe().
 				AddIngredient(ItemID.BottledWater).
 				AddIngredient(ItemID.SpecularFish).
-				AddRecipeGroup("ExUtil:AnyPoorTomb", 5).
+				AddRecipeGroup(extraUtility.AnyPoorTomb).
 				AddTile(TileID.DemonAltar).
 				Register();
 			/**

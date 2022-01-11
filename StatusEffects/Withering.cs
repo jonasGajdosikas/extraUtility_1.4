@@ -14,9 +14,13 @@ namespace extraUtility.StatusEffects
         {
             DisplayName.SetDefault("Withering");
             Description.SetDefault("All plants around you wither");
+            Main.buffNoTimeDisplay[Type] = false;
             Main.debuff[Type] = false;
             Main.pvpBuff[Type] = false;
         }
-
+        public override void Update(Player player, ref int buffIndex)
+        {
+            player.GetModPlayer<ExUtilPlayer>().WithersPlants = true;
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent.Creative;
 using Microsoft.Xna.Framework;
 
 namespace extraUtility.Items
@@ -11,6 +12,7 @@ namespace extraUtility.Items
 		{
 			DisplayName.SetDefault("Grave Mirror"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
 			Tooltip.SetDefault("Gaze in the mirror to return to your last death point");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults()
@@ -26,8 +28,8 @@ namespace extraUtility.Items
 		public override void AddRecipes()
 		{
 			CreateRecipe().
-				AddRecipeGroup("ExUtil:AnyMirror").
-				AddRecipeGroup("ExUtil:AnyRichTomb", 5).
+				AddRecipeGroup(extraUtility.AnyMirror).
+				AddRecipeGroup(extraUtility.AnyRichTomb, 5).
 				AddTile(TileID.DemonAltar).
 				Register();
 			/**

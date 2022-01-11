@@ -8,15 +8,17 @@ namespace extraUtility
 {
 	public class extraUtility : Mod
 	{
+		public static RecipeGroup AnyEvilMaterial,
+			AnyLivingFire, AnyPoorTomb, AnyRichTomb, AnyMirror, AnyCopperOre;
 		public override void AddRecipeGroups()
 		{
-			RecipeGroup group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Evil Crafting Material", new int[] { ItemID.Ichor, ItemID.CursedFlame });
-			RecipeGroup.RegisterGroup("ExUtil:EvilMaterial", group);
+			AnyEvilMaterial = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Evil Crafting Material", new int[] { ItemID.Ichor, ItemID.CursedFlame });
+			RecipeGroup.RegisterGroup("ExUtil:EvilMaterial", AnyEvilMaterial);
 
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Living Fire", new int[] {
+			AnyLivingFire = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Living Fire", new int[] {
 				ItemID.LivingFireBlock, ItemID.LivingCursedFireBlock, ItemID.LivingDemonFireBlock,
 				ItemID.LivingFrostFireBlock, ItemID.LivingIchorBlock, ItemID.LivingUltrabrightFireBlock });
-			RecipeGroup.RegisterGroup("ExUtil:AnyLivingFire", group);
+			RecipeGroup.RegisterGroup("ExUtil:AnyLivingFire", AnyLivingFire);
 
 			int[] graves = new int[]
 			{
@@ -27,8 +29,8 @@ namespace extraUtility
 				ItemID.Gravestone,
 				ItemID.Obelisk
 			};
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Non-Gilded Gravestone", graves);
-			RecipeGroup.RegisterGroup("ExUtil:AnyPoorTomb", group);
+			AnyPoorTomb = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Non-Gilded Gravestone", graves);
+			RecipeGroup.RegisterGroup("ExUtil:AnyPoorTomb", AnyPoorTomb);
 
 			int[] richGraves = new int[]
 			{
@@ -38,12 +40,14 @@ namespace extraUtility
 				ItemID.RichGravestone4,
 				ItemID.RichGravestone5
 			};
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Gilded Gravestone", richGraves);
-			RecipeGroup.RegisterGroup("ExUtil:AnyRichTomb", group);
+			AnyRichTomb = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Gilded Gravestone", richGraves);
+			RecipeGroup.RegisterGroup("ExUtil:AnyRichTomb", AnyRichTomb);
 
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Magic Mirror", new int[] { ItemID.MagicMirror, ItemID.IceMirror });
-			RecipeGroup.RegisterGroup("ExUtil:AnyMirror", group);
+			AnyMirror = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Magic Mirror", new int[] { ItemID.MagicMirror, ItemID.IceMirror });
+			RecipeGroup.RegisterGroup("ExUtil:AnyMirror", AnyMirror);
 
+			AnyCopperOre = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Copper Ore", new int[] { ItemID.CopperOre, ItemID.TinOre });
+			RecipeGroup.RegisterGroup("ExUtil:AnyCopperOre", AnyCopperOre);
 		}
 
 	}

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
@@ -8,98 +9,128 @@ namespace extraUtility
 {
     public class ExUtilPlayer : ModPlayer
     {
-
+        public static List<int> nonPlantCuttables = new List<int>(new int[] { 28, 444, 231 });
+        public bool WithersPlants;
         public ExUtilPlayer()
         {
         }
-        /**
         public override void PreUpdate()
         {
             base.PreUpdate();
-
-            Item item = Player.inventory[Player.selectedItem];
-            if (item.type == ModContent.ItemType<DeathMirror>() && Player.itemAnimation > 0)
+            if (WithersPlants)
             {
-                if (Main.rand.Next(2) == 0)
+                if (this.WithersPlants)
                 {
-                    Dust.NewDust(Player.position, Player.width, Player.height, DustID.LifeDrain, 0f, 0f, 150, new Color(), 1.1f);
-                }
-                if (Player.itemTime == 0) Player.itemTime = 90;
-                else if (Player.itemTime == 45)
-                {
-                    for (int index = 0; index < 70; ++index)
+                    Rectangle hitbox = Player.Hitbox;
+                    int x0 = (hitbox.X + hitbox.Width / 2) / 16;
+                    int y0 = (hitbox.Y + hitbox.Height / 2) / 16;
+                    for (int dx = -5; dx < 6; dx++)
                     {
-                        int d = Dust.NewDust(Player.position, Player.width, Player.height, DustID.LifeDrain, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 150, new Color(), 1.5f);
-                        Main.dust[d].velocity *= 4f;
-                        Main.dust[d].noGravity = true;
-                    }
-                    Player.grappling[0] = -1;
-                    Player.grapCount = 0;
-                    for (int index = 0; index < 1000; ++index)
-                    {
-                        if (Main.projectile[index].active && Main.projectile[index].owner == Player.whoAmI && Main.projectile[index].aiStyle == 7)
-                            Main.projectile[index].Kill();
-                    }
-
-                    if (Player.whoAmI == Main.myPlayer)
-                    {
-                        Player.Teleport(Player.lastDeathPostion, 1);
-                        Player.velocity = Vector2.Zero;
-                        if (Main.netMode == NetmodeID.MultiplayerClient)
-                            NetMessage.SendData(MessageID.Teleport, -1, -1, null, 0, Player.whoAmI, Player.lastDeathPostion.X, Player.lastDeathPostion.Y - 16, 1);
-                    }
-
-                    for (int index = 0; index < 70; ++index)
-                    {
-                        int d = Dust.NewDust(Player.position, Player.width, Player.height, DustID.LifeDrain, 0.0f, 0.0f, 150, new Color(), 1.5f);
-                        Main.dust[d].velocity *= 4f;
-                        Main.dust[d].noGravity = true;
+                        for (int dy = -5; dy < 6; dy++)
+                        {
+                            if (dx * dx + dy * dy < 36)
+                            {
+                                if (Main.tile[x0 + dx, y0 + dy] != null &&
+                                    Main.tileCut[Main.tile[x0 + dx, y0 + dy].type] &&
+                                    !nonPlantCuttables.Contains(Main.tile[x0 + dx, y0 + dy].type) &&
+                                    WorldGen.CanCutTile(x0 + dx, y0 + dy, Terraria.Enums.TileCuttingContext.AttackMelee))
+                                {
+                                    WorldGen.KillTile(x0 + dx, y0 + dy);
+                                    if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, x0 + dx, y0 + dy);
+                                }
+                            }
+                        }
                     }
                 }
             }
-            if (item.type == ModContent.ItemType<DeathRecallPot>() && Player.itemAnimation > 0)
-            {
-                if (Player.itemTime == 0)
+            /**
+                Item item = Player.inventory[Player.selectedItem];
+                if (item.type == ModContent.ItemType<DeathMirror>() && Player.itemAnimation > 0)
                 {
-                    Player.itemTime = 15;
+                    if (Main.rand.Next(2) == 0)
+                    {
+                        Dust.NewDust(Player.position, Player.width, Player.height, DustID.LifeDrain, 0f, 0f, 150, new Color(), 1.1f);
+                    }
+                    if (Player.itemTime == 0) Player.itemTime = 90;
+                    else if (Player.itemTime == 45)
+                    {
+                        for (int index = 0; index < 70; ++index)
+                        {
+                            int d = Dust.NewDust(Player.position, Player.width, Player.height, DustID.LifeDrain, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 150, new Color(), 1.5f);
+                            Main.dust[d].velocity *= 4f;
+                            Main.dust[d].noGravity = true;
+                        }
+                        Player.grappling[0] = -1;
+                        Player.grapCount = 0;
+                        for (int index = 0; index < 1000; ++index)
+                        {
+                            if (Main.projectile[index].active && Main.projectile[index].owner == Player.whoAmI && Main.projectile[index].aiStyle == 7)
+                                Main.projectile[index].Kill();
+                        }
+
+                        if (Player.whoAmI == Main.myPlayer)
+                        {
+                            Player.Teleport(Player.lastDeathPostion, 1);
+                            Player.velocity = Vector2.Zero;
+                            if (Main.netMode == NetmodeID.MultiplayerClient)
+                                NetMessage.SendData(MessageID.Teleport, -1, -1, null, 0, Player.whoAmI, Player.lastDeathPostion.X, Player.lastDeathPostion.Y - 16, 1);
+                        }
+
+                        for (int index = 0; index < 70; ++index)
+                        {
+                            int d = Dust.NewDust(Player.position, Player.width, Player.height, DustID.LifeDrain, 0.0f, 0.0f, 150, new Color(), 1.5f);
+                            Main.dust[d].velocity *= 4f;
+                            Main.dust[d].noGravity = true;
+                        }
+                    }
                 }
-                else if (Player.itemTime == 2)
+                if (item.type == ModContent.ItemType<DeathRecallPot>() && Player.itemAnimation > 0)
                 {
-                    for (int index = 0; index < 70; ++index)
+                    if (Player.itemTime == 0)
                     {
-                        int d = Dust.NewDust(Player.position, Player.width, Player.height, DustID.GemAmethyst, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 150, new Color(), 1.5f);
-                        Main.dust[d].velocity *= 4f;
-                        Main.dust[d].noGravity = true;
+                        Player.itemTime = 15;
                     }
+                    else if (Player.itemTime == 2)
+                    {
+                        for (int index = 0; index < 70; ++index)
+                        {
+                            int d = Dust.NewDust(Player.position, Player.width, Player.height, DustID.GemAmethyst, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 150, new Color(), 1.5f);
+                            Main.dust[d].velocity *= 4f;
+                            Main.dust[d].noGravity = true;
+                        }
 
-                    Player.grappling[0] = -1;
-                    Player.grapCount = 0;
-                    for (int index = 0; index < 1000; ++index)
-                    {
-                        if (Main.projectile[index].active && Main.projectile[index].owner == Player.whoAmI && Main.projectile[index].aiStyle == 7)
-                            Main.projectile[index].Kill();
-                    }
+                        Player.grappling[0] = -1;
+                        Player.grapCount = 0;
+                        for (int index = 0; index < 1000; ++index)
+                        {
+                            if (Main.projectile[index].active && Main.projectile[index].owner == Player.whoAmI && Main.projectile[index].aiStyle == 7)
+                                Main.projectile[index].Kill();
+                        }
 
-                    if (Player.whoAmI == Main.myPlayer)
-                    {
-                        Player.Teleport(Player.lastDeathPostion, 1);
-                        Player.velocity = Vector2.Zero;
-                        if (Main.netMode == NetmodeID.MultiplayerClient)
-                            NetMessage.SendData(MessageID.Teleport, -1, -1, null, 0, Player.whoAmI, Player.lastDeathPostion.X, Player.lastDeathPostion.Y - 16, 1);
-                    }
+                        if (Player.whoAmI == Main.myPlayer)
+                        {
+                            Player.Teleport(Player.lastDeathPostion, 1);
+                            Player.velocity = Vector2.Zero;
+                            if (Main.netMode == NetmodeID.MultiplayerClient)
+                                NetMessage.SendData(MessageID.Teleport, -1, -1, null, 0, Player.whoAmI, Player.lastDeathPostion.X, Player.lastDeathPostion.Y - 16, 1);
+                        }
 
-                    for (int index = 0; index < 70; ++index)
-                    {
-                        int d = Dust.NewDust(Player.position, Player.width, Player.height, DustID.GemAmethyst, 0.0f, 0.0f, 150, new Color(), 1.5f);
-                        Main.dust[d].velocity *= 4f;
-                        Main.dust[d].noGravity = true;
+                        for (int index = 0; index < 70; ++index)
+                        {
+                            int d = Dust.NewDust(Player.position, Player.width, Player.height, DustID.GemAmethyst, 0.0f, 0.0f, 150, new Color(), 1.5f);
+                            Main.dust[d].velocity *= 4f;
+                            Main.dust[d].noGravity = true;
+                        }
+                        if (ItemLoader.ConsumeItem(item, Player) && item.stack > 0)
+                        {
+                            item.stack--;
+                        }
                     }
-                    if (ItemLoader.ConsumeItem(item, Player) && item.stack > 0)
-                    {
-                        item.stack--;
-                    }
-                }
-            }
-        }/**/
+                }/**/
+        }
+        public override void ResetEffects()
+        {
+            WithersPlants = false;
+        }
     }
 }
