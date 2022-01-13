@@ -33,7 +33,7 @@ namespace extraUtility.StatusEffects
     {
 		const float scaleDecrease = 1f;
 		private Asset<Texture2D> witheRingTexture;
-		public override Position GetDefaultPosition() => new Between(PlayerDrawLayers.ElectrifiedDebuffFront, PlayerDrawLayers.IceBarrier);
+		public override Position GetDefaultPosition() => new Between(PlayerDrawLayers.FrozenOrWebbedDebuff, PlayerDrawLayers.ElectrifiedDebuffFront);
         public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
         {
 			return drawInfo.drawPlayer.GetModPlayer<ExUtilPlayer>().WithersPlants;
@@ -92,6 +92,7 @@ namespace extraUtility.StatusEffects
 					SpriteEffects.None,												//effects
 					0																//layer
 				));
+				Main.NewText("added DrawData " + j + " to cache");
 			}
 		}
     }
