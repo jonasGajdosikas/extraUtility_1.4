@@ -9,8 +9,9 @@ namespace extraUtility
 {
     public class ExUtilPlayer : ModPlayer
     {
-        public static List<int> nonPlantCuttables = new List<int>(new int[] { 28, 444, 231 });
+        static List<int> nonPlantCuttables = new List<int>(new int[] { 28, 444, 231 });
         public bool WithersPlants;
+
         public ExUtilPlayer()
         {
         }
@@ -128,6 +129,7 @@ namespace extraUtility
                     }
                 }/**/
         }
+        
         public override void ResetEffects()
         {
             WithersPlants = false;

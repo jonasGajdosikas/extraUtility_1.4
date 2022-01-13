@@ -49,6 +49,6 @@ namespace extraUtility
 			AnyCopperOre = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Copper Ore", new int[] { ItemID.CopperOre, ItemID.TinOre });
 			RecipeGroup.RegisterGroup("ExUtil:AnyCopperOre", AnyCopperOre);
 		}
-
+		
 	}
 }
