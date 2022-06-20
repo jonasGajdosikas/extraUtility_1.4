@@ -1,1 +1,6 @@
-Utility Accessories is a pretty cool mod, it does...this. Modify this file with a description of your mod.
+If you've ever been frustrated by dying and having to travel across half the world just to get back to farming?
+Well worry no more: this mod adds the Grave Potion (sold by Witch Doctor, or crafted with a Specular Fish, any Tombstone and a Bottled water) and the Grave Mirror (crafted using any Magic Mirror and 5 Gilded Tombstones)
+Use these items to teleport to your last death point and continue farming 
+*Don't get kill-locked in a pre-Skeletron dungeon*
+0.3:
+	added herbicide potion to kill all plants in a 6 tile radius from you
