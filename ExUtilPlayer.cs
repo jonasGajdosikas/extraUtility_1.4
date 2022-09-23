@@ -11,6 +11,8 @@ namespace extraUtility
     {
         public static List<int> nonPlantCuttables = new List<int>(new int[] { 28, 444, 231 });
         public bool WithersPlants;
+        public bool PocketPylon;
+
         public ExUtilPlayer()
         {
         }
@@ -31,8 +33,8 @@ namespace extraUtility
                             if (dx * dx + dy * dy < 36)
                             {
                                 if (Main.tile[x0 + dx, y0 + dy] != null &&
-                                    Main.tileCut[Main.tile[x0 + dx, y0 + dy].type] &&
-                                    !nonPlantCuttables.Contains(Main.tile[x0 + dx, y0 + dy].type) &&
+                                    Main.tileCut[Main.tile[x0 + dx, y0 + dy].TileType] &&
+                                    !nonPlantCuttables.Contains(Main.tile[x0 + dx, y0 + dy].TileType) &&
                                     WorldGen.CanCutTile(x0 + dx, y0 + dy, Terraria.Enums.TileCuttingContext.AttackMelee))
                                 {
                                     WorldGen.KillTile(x0 + dx, y0 + dy);
@@ -131,6 +133,8 @@ namespace extraUtility
         public override void ResetEffects()
         {
             WithersPlants = false;
+            PocketPylon = false;
         }
+        
     }
 }

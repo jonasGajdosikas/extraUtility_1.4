@@ -2,7 +2,7 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria;
-
+using Terraria.Audio;
 
 namespace extraUtility
 {
