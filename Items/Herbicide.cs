@@ -37,7 +37,7 @@ namespace extraUtility.Items
             CreateRecipe()
                 .AddIngredient(ItemID.BottledWater)
                 .AddIngredient(ItemID.Deathweed)
-                .AddRecipeGroup(extraUtility.AnyCopperOre)
+                .AddRecipeGroup(exUtilSystem.AnyCopperOre)
                 .AddTile(TileID.Bottles)
                 .Register();
         }
