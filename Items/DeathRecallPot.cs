@@ -29,7 +29,7 @@ namespace extraUtility.Items
 			CreateRecipe().
 				AddIngredient(ItemID.BottledWater).
 				AddIngredient(ItemID.SpecularFish).
-				AddRecipeGroup(extraUtility.AnyPoorTomb).
+				AddRecipeGroup(exUtilSystem.AnyPoorTomb).
 				AddTile(TileID.DemonAltar).
 				Register();
 			/**
@@ -60,8 +60,11 @@ namespace extraUtility.Items
                 player.grappling[0] = -1;
                 player.grapCount = 0;
                 for (int index = 0; index < Main.maxProjectiles; ++index)
-		{
-			if (player.whoAmI == Main.myPlayer)
+                {
+                    if (Main.projectile[index].active && Main.projectile[index].owner == player.whoAmI && Main.projectile[index].aiStyle == 7)
+                        Main.projectile[index].Kill();
+                }
+                if (player.whoAmI == Main.myPlayer)
                 {
                     player.Teleport(player.lastDeathPostion, 1);
                     player.velocity = Vector2.Zero;
