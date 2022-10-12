@@ -6,6 +6,10 @@ This is a general utility oriented mod that adds multiple QoL features:
 
 // 4th digit builds are rebuilds for newer versions of tModLoader
 
+0.6.3:
+	fixed a bug where the player would freeze upon opening a chest
+0.6.2:
+	your cell phone now functions similar to the potion of return; and also allows you to teleport to the point of your last death
 0.6:
 	you can now access your defender's forge and safe if they are favorited in your inventory by right-clicking chester
 0.5:

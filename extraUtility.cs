@@ -2,7 +2,10 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria;
-using Terraria.Audio;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using System;
+using System.Collections.Generic;
 
 namespace extraUtility
 {
@@ -65,6 +68,7 @@ namespace extraUtility
 			c.Emit(OpCodes.Ldarg_0);
 			c.EmitDelegate<Func<int, Player, int>>((returnValue, player) =>
 			{
+				if (!player.piggyBankProjTracker.IsTrackingSomething || player.piggyBankProjTracker.ProjectileLocalIndex < 0 || player.piggyBankProjTracker.ProjectileLocalIndex > 1000) return returnValue;
 				if(Main.projectile[player.piggyBankProjTracker.ProjectileLocalIndex].type == 960)
 				{
                     foreach (Item slot in player.inventory)
@@ -211,18 +215,6 @@ namespace extraUtility
 			}
 		}
 	}
-	public class CellPhoneAltGlobalItem : GlobalItem
-	{
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation)
-		{
-			return entity.netID == ItemID.CellPhone;
-		}
-		public override bool AltFunctionUse(Item item, Player player)
-        {
-            if (item.netID == ItemID.CellPhone) return player.lastDeathPostion != Vector2.Zero;
-            return base.AltFunctionUse(item, player);
-        }
-    }
 	public class exUtilSystem : ModSystem
 	{
 		public override void AddRecipes()
