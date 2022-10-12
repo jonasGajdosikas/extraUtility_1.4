@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace extraUtility.Items
 {
@@ -28,8 +29,8 @@ namespace extraUtility.Items
 		public override void AddRecipes()
 		{
 			CreateRecipe().
-				AddRecipeGroup(extraUtility.AnyMirror).
-				AddRecipeGroup(extraUtility.AnyRichTomb, 5).
+				AddRecipeGroup(exUtilSystem.AnyMirror).
+				AddRecipeGroup(exUtilSystem.AnyRichTomb, 5).
 				AddTile(TileID.DemonAltar).
 				Register();
 			/**
@@ -55,12 +56,14 @@ namespace extraUtility.Items
                     Main.dust[d].velocity *= 4f;
                     Main.dust[d].noGravity = true;
                 }
-
                 player.grappling[0] = -1;
                 player.grapCount = 0;
                 for (int index = 0; index < Main.maxProjectiles; ++index)
-        {
-			if (player.whoAmI == Main.myPlayer)
+                {
+                    if (Main.projectile[index].active && Main.projectile[index].owner == player.whoAmI && Main.projectile[index].aiStyle == 7)
+                        Main.projectile[index].Kill();
+                }
+			    if (player.whoAmI == Main.myPlayer)
                 {
                     player.Teleport(player.lastDeathPostion, 1);
                     player.velocity = Vector2.Zero;
