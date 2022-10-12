@@ -3,8 +3,8 @@ using Terraria.ModLoader;
 
 namespace extraUtility
 {
-	public class ChangeNameCommand : ModCommand
-	{
+    public class ChangeNameCommand : ModCommand
+    {
         public override CommandType Type => CommandType.Chat;
         public override string Command => "setName";
         public override string Usage => "/setName newName";

@@ -5,11 +5,11 @@ using extraUtility.Items;
 
 namespace extraUtility
 {
-	public class ExUtilGlobalNPC : GlobalNPC
-	{
-		public ExUtilGlobalNPC()
-		{
-		}
+    public class ExUtilGlobalNPC : GlobalNPC
+    {
+        public ExUtilGlobalNPC()
+        {
+        }
 
         public override void SetupShop(int type, Chest shop, ref int nextSlot)
         {
