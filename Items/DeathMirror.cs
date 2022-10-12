@@ -28,8 +28,8 @@ namespace extraUtility.Items
 		public override void AddRecipes()
 		{
 			CreateRecipe().
-				AddRecipeGroup(extraUtility.AnyMirror).
-				AddRecipeGroup(extraUtility.AnyRichTomb, 5).
+				AddRecipeGroup(exUtilSystem.AnyMirror).
+				AddRecipeGroup(exUtilSystem.AnyRichTomb, 5).
 				AddTile(TileID.DemonAltar).
 				Register();
 			/**
@@ -59,15 +59,15 @@ namespace extraUtility.Items
                 player.grappling[0] = -1;
                 player.grapCount = 0;
                 for (int index = 0; index < Main.maxProjectiles; ++index)
-        {
-			if (player.whoAmI == Main.myPlayer)
                 {
-                    player.Teleport(player.lastDeathPostion, 1);
-                    player.velocity = Vector2.Zero;
-                    if (Main.netMode == NetmodeID.MultiplayerClient)
-                        NetMessage.SendData(MessageID.Teleport, -1, -1, null, 0, player.whoAmI, player.lastDeathPostion.X, player.lastDeathPostion.Y, 1);
+                    if (player.whoAmI == Main.myPlayer)
+                    {
+                        player.Teleport(player.lastDeathPostion, 1);
+                        player.velocity = Vector2.Zero;
+                        if (Main.netMode == NetmodeID.MultiplayerClient)
+                            NetMessage.SendData(MessageID.Teleport, -1, -1, null, 0, player.whoAmI, player.lastDeathPostion.X, player.lastDeathPostion.Y, 1);
+                    }
                 }
-
                 for (int index = 0; index < 70; ++index)
                 {
                     int d = Dust.NewDust(player.position, player.width, player.height, DustIDSelector(index, new int[] { DustID.GoldCoin, DustID.Honey, DustID.Ichor, DustID.DesertWater2 }), 0.0f, 0.0f, 150, new Color(), 1.5f);

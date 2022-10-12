@@ -153,7 +153,7 @@ namespace extraUtility
         public override void ResetEffects()
         {
             WithersPlants = false;
-            PocketPylon = false;
+            hasPocketPylon = false;
         }
         
     }

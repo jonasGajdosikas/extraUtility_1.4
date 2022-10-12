@@ -29,7 +29,7 @@ namespace extraUtility.Items
 			CreateRecipe().
 				AddIngredient(ItemID.BottledWater).
 				AddIngredient(ItemID.SpecularFish).
-				AddRecipeGroup(extraUtility.AnyPoorTomb).
+				AddRecipeGroup(exUtilSystem.AnyPoorTomb).
 				AddTile(TileID.DemonAltar).
 				Register();
 			/**
@@ -59,16 +59,16 @@ namespace extraUtility.Items
 
                 player.grappling[0] = -1;
                 player.grapCount = 0;
-                for (int index = 0; index < Main.maxProjectiles; ++index)
-		{
-			if (player.whoAmI == Main.myPlayer)
-                {
-                    player.Teleport(player.lastDeathPostion, 1);
-                    player.velocity = Vector2.Zero;
-                    if (Main.netMode == NetmodeID.MultiplayerClient)
-                        NetMessage.SendData(MessageID.Teleport, -1, -1, null, 0, player.whoAmI, player.lastDeathPostion.X, player.lastDeathPostion.Y, 1);
-                }
-
+				for (int index = 0; index < Main.maxProjectiles; ++index)
+				{
+					if (player.whoAmI == Main.myPlayer)
+					{
+						player.Teleport(player.lastDeathPostion, 1);
+						player.velocity = Vector2.Zero;
+						if (Main.netMode == NetmodeID.MultiplayerClient)
+							NetMessage.SendData(MessageID.Teleport, -1, -1, null, 0, player.whoAmI, player.lastDeathPostion.X, player.lastDeathPostion.Y, 1);
+					}
+				}
                 for (int index = 0; index < 70; ++index)
                 {
                     int d = Dust.NewDust(player.position, player.width, player.height, DustID.GemRuby, 0.0f, 0.0f, 150, new Color(), 1.5f);
