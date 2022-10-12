@@ -45,10 +45,37 @@ namespace extraUtility.Items
         {
             return player.lastDeathPostion != Vector2.Zero;
         }
-		public override bool? UseItem(Player player)
+
+        public static void Use(Player player)
+        {
+            if (player.itemTime == player.itemTimeMax / 2 && player.lastDeathPostion != Vector2.Zero)
+            {
+                for (int index = 0; index < 70; ++index)
+                {
+                    int d = Dust.NewDust(player.position, player.width, player.height, DustID.GemRuby, player.velocity.X * 0.5f, player.velocity.Y * 0.5f, 150, new Color(), 1.5f);
+                    Main.dust[d].velocity *= 4f;
+                    Main.dust[d].noGravity = true;
+                }
+
+                player.grappling[0] = -1;
+                player.grapCount = 0;
+                for (int index = 0; index < Main.maxProjectiles; ++index)
 		{
-			player.UnityTeleport(player.lastDeathPostion);
-			return true;
+			if (player.whoAmI == Main.myPlayer)
+                {
+                    player.Teleport(player.lastDeathPostion, 1);
+                    player.velocity = Vector2.Zero;
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                        NetMessage.SendData(MessageID.Teleport, -1, -1, null, 0, player.whoAmI, player.lastDeathPostion.X, player.lastDeathPostion.Y, 1);
+                }
+
+                for (int index = 0; index < 70; ++index)
+                {
+                    int d = Dust.NewDust(player.position, player.width, player.height, DustID.GemRuby, 0.0f, 0.0f, 150, new Color(), 1.5f);
+                    Main.dust[d].velocity *= 4f;
+                    Main.dust[d].noGravity = true;
+                }
+            }
 		}
 	}
 }
