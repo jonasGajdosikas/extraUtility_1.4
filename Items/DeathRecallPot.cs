@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
@@ -14,6 +14,7 @@ namespace extraUtility.Items
             Tooltip.SetDefault("Drink the potion to return to your last death point");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 20;
         }
+
 
         public override void SetDefaults() 
         {
@@ -60,6 +61,12 @@ namespace extraUtility.Items
                 player.grappling[0] = -1;
                 player.grapCount = 0;
                 for (int index = 0; index < Main.maxProjectiles; ++index)
+                {
+                    if (Main.projectile[index].active && Main.projectile[index].owner == player.whoAmI && Main.projectile[index].aiStyle == 7)
+                        Main.projectile[index].Kill();
+                }
+                if (player.whoAmI == Main.myPlayer)
+
                 {
                     if (player.whoAmI == Main.myPlayer)
                     {

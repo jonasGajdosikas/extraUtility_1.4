@@ -1,8 +1,9 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace extraUtility.Items
 {
@@ -24,7 +25,6 @@ namespace extraUtility.Items
             Item.consumable = false;
             return;
         }
-
         public override void AddRecipes()
         {
             CreateRecipe().
@@ -55,18 +55,19 @@ namespace extraUtility.Items
                     Main.dust[d].velocity *= 4f;
                     Main.dust[d].noGravity = true;
                 }
-
                 player.grappling[0] = -1;
                 player.grapCount = 0;
                 for (int index = 0; index < Main.maxProjectiles; ++index)
                 {
-                    if (player.whoAmI == Main.myPlayer)
-                    {
-                        player.Teleport(player.lastDeathPostion, 1);
-                        player.velocity = Vector2.Zero;
-                        if (Main.netMode == NetmodeID.MultiplayerClient)
-                            NetMessage.SendData(MessageID.Teleport, -1, -1, null, 0, player.whoAmI, player.lastDeathPostion.X, player.lastDeathPostion.Y, 1);
-                    }
+                    if (Main.projectile[index].active && Main.projectile[index].owner == player.whoAmI && Main.projectile[index].aiStyle == 7)
+                        Main.projectile[index].Kill();
+                }
+                if (player.whoAmI == Main.myPlayer)
+                {
+                    player.Teleport(player.lastDeathPostion, 1);
+                    player.velocity = Vector2.Zero;
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                        NetMessage.SendData(MessageID.Teleport, -1, -1, null, 0, player.whoAmI, player.lastDeathPostion.X, player.lastDeathPostion.Y, 1);
                 }
                 for (int index = 0; index < 70; ++index)
                 {
