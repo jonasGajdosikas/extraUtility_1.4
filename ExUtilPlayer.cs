@@ -11,7 +11,26 @@ namespace extraUtility
     {
         static List<int> nonPlantCuttables = new List<int>(new int[] { 28, 444, 231 });
         public bool WithersPlants;
-        public bool PocketPylon;
+        public bool hasPocketPylon;
+
+        public void ReturnToDeathPoint()
+        {
+            Player.RemoveAllGrapplingHooks();
+            Player.PotionOfReturnOriginalUsePosition = new Vector2?(Player.Bottom);
+            bool flag = Player.immune;
+            int num = Player.immuneTime;
+            Player.StopVanityActions(false);
+            Player.Teleport(Player.lastDeathPostion + Player.Size * new Vector2(-0.5f, -1f), 1, 0);
+            Player.velocity = Vector2.Zero;
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                NetMessage.SendData(MessageID.Teleport, -1, -1, null, 0, (float)Player.whoAmI, Player.lastDeathPostion.X - Player.Size.X * 0.5f, Player.lastDeathPostion.Y - Player.Size.Y, 1, 0, 0);
+            }
+            Player.PotionOfReturnHomePosition = new Vector2?(Player.Bottom);
+            NetMessage.SendData(MessageID.PlayerControls, -1, Player.whoAmI, null, Player.whoAmI, 0f, 0f, 0f, 0, 0, 0);
+            Player.immune = flag;
+            Player.immuneTime = num;
+        }
 
         public ExUtilPlayer()
         {
