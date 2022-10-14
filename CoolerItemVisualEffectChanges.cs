@@ -1,5 +1,6 @@
 ﻿using MonoMod.Cil;
 using MonoMod.RuntimeDetour.HookGen;
+using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,10 @@ namespace extraUtility
                 var method = modItem.GetMethod(nameof(ModItem.CanUseItem));
                 if (method != null)
                 {
-                    ilChanges.Add(Tuple.Create(method, new ILContext.Manipulator(ilEditCanUseItem)));
+                    if (method.GetRealDeclaringType() == modItem)
+                    {
+                        ilChanges.Add(Tuple.Create(method, new ILContext.Manipulator(ilEditCanUseItem)));
+                    }
                 }
             }
             foreach (var ilChange in ilChanges)
