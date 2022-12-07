@@ -1,0 +1,28 @@
+Mods: {
+    ExUtil: {
+        GravRope: {
+            Antigravity: Antigravity
+            AntigravityTooltip: Slathering it in Gravitation Potion affected it in weird ways
+        }
+        Herbicide: {
+            Name: Herbicide
+            Tooltip: 
+            '''
+            Withers nearby plants
+            For better Korruptd traversal
+            '''
+        }
+        DeathMirror: {
+            Name: Grave Mirror
+            Tooltip: Gaze in the mirror to return to your last death point
+        }
+        DeathRecallPot: {
+            Name: Grave Recall Potion
+            Tooltip: Drink the potion to return to your last death point
+        }
+        PocketPylon: {
+            Name: Pocket Pylon
+            Tooltip: Teleport to any pylon, no matter where you are
+        }
+    }
+}

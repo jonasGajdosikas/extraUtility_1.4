@@ -1,9 +1,9 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using extraUtility.Items;
+using ExtraUtility.Items;
 
-namespace extraUtility
+namespace ExtraUtility
 {
     public class ExUtilGlobalNPC : GlobalNPC
     {

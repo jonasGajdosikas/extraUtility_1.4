@@ -6,6 +6,12 @@ This is a general utility oriented mod that adds multiple QoL features:
 
 // 4th digit builds are rebuilds for newer versions of tModLoader
 
+0.6.3.3:
+    removed a debug command that would spam the local chat
+0.6.3.2:
+    added a command (/copyCharacter) to copy the the look of the current character to the clipboard
+0.6.3.1:
+    added localization support; if anyone wants to help translate this mod you can DM me (20jonas02#4275)
 0.6.3:
 	fixed a bug where the player would freeze upon opening a chest
 0.6.2:

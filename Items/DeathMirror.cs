@@ -5,14 +5,14 @@ using Terraria.GameContent.Creative;
 using Microsoft.Xna.Framework;
 using System;
 
-namespace extraUtility.Items
+namespace ExtraUtility.Items
 {
     public class DeathMirror : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Grave Mirror"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-            Tooltip.SetDefault("Gaze in the mirror to return to your last death point");
+            DisplayName.SetDefault($"{{$Mods.ExUtil.DeathMirror.Name}}"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
+            Tooltip.SetDefault($"{{$Mods.ExUtil.DeathMirror.Tooltip}}");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
@@ -28,8 +28,8 @@ namespace extraUtility.Items
         public override void AddRecipes()
         {
             CreateRecipe().
-                AddRecipeGroup(exUtilSystem.AnyMirror).
-                AddRecipeGroup(exUtilSystem.AnyRichTomb, 5).
+                AddRecipeGroup(ExUtilSystem.AnyMirror).
+                AddRecipeGroup(ExUtilSystem.AnyRichTomb, 5).
                 AddTile(TileID.DemonAltar).
                 Register();
             /**

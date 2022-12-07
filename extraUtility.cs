@@ -6,19 +6,76 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
 using System.Collections.Generic;
-using extraUtility.Items;
+using ExtraUtility.Items;
 
-namespace extraUtility
+namespace ExtraUtility
 {
-    public class extraUtility : Mod
+    public class ExtraUtility : Mod
     {
-        internal static extraUtility Instance;
+        internal static ExtraUtility Instance;
+        internal AntigravRope[] newRopes = new AntigravRope[]
+        {
+            new AntigravRope(ItemID.Rope, TileID.Rope, "AntigravRope"),
+            new AntigravRope(ItemID.VineRope, TileID.VineRope, "AntigravVineRope"),
+            new AntigravRope(ItemID.SilkRope, TileID.SilkRope, "AntigravSilkRope"),
+            new AntigravRope(ItemID.WebRope, TileID.WebRope, "AntigravWebRope"),
+            new AntigravRope(ItemID.SillyStreamerBlue, TileID.SillyStreamerBlue, "AntigravSillyStreamerBlue"),
+            new AntigravRope(ItemID.SillyStreamerGreen, TileID.SillyStreamerGreen, "AntigravSillyStreamerGreen"),
+            new AntigravRope(ItemID.SillyStreamerPink, TileID.SillyStreamerPink, "AntigravSillyStreamerPink"),
+            new AntigravRope(ItemID.Chain, TileID.Chain, "AntigravChain"),
+        };
+        internal static List<int> antigravRopeIDs = new();
         public override void Load()
         {
             Instance = this;
+            foreach (AntigravRope rope in newRopes)
+            {
+                GravRopeItem gravRopeItem = new(rope);
+                AddContent(gravRopeItem);
+                antigravRopeIDs.Add(gravRopeItem.Item.type);
+            }
             IL.Terraria.Main.TryInteractingWithMoneyTrough += Main_TryInteractingWithChester;
             IL.Terraria.Player.HandleBeingInChestRange += Player_HandleBeingInChesterRange;
             IL.Terraria.Player.ItemCheck_Inner += Player_CellphoneReturnHook;
+            On.Terraria.Player.PlaceThing_Tiles_CheckRopeUsability += Player_PlaceThing_Tiles_CheckRopeUsability;
+        }
+
+        private bool Player_PlaceThing_Tiles_CheckRopeUsability(On.Terraria.Player.orig_PlaceThing_Tiles_CheckRopeUsability orig, Player self, bool canUse)
+        {
+            if (Main.tileRope[self.inventory[self.selectedItem].createTile] && canUse && Main.tile[Player.tileTargetX, Player.tileTargetY].HasTile && Main.tileRope[Main.tile[Player.tileTargetX, Player.tileTargetY].TileType])
+            {
+                int num = Player.tileTargetY;
+                int num2 = Player.tileTargetX;
+                _ = self.inventory[self.selectedItem].createTile;
+                if (self.GetModPlayer<ExUtilPlayer>().IsHoldingAntigravRope)
+                {
+                    while (Main.tile[num2, num].HasTile && Main.tileRope[Main.tile[num2, num].TileType] && num > 5 && Main.tile[num2, num - 2] != null && Main.tile[num2, num - 1].LiquidType != LiquidID.Lava)
+                    {
+                        num--;
+                        if (Main.tile[num2, num] == null)
+                        {
+                            canUse = false;
+                            num = Player.tileTargetY;
+                            break;
+                        }
+                    }
+                } else {
+                    while (Main.tile[num2, num].HasTile && Main.tileRope[Main.tile[num2, num].TileType] && num < Main.maxTilesY - 5 && Main.tile[num2, num + 2] != null && Main.tile[num2, num + 1].LiquidType != LiquidID.Lava)
+                    {
+                        num++;
+                        if (Main.tile[num2, num] == null)
+                        {
+                            canUse = false;
+                            num = Player.tileTargetY;
+                            break;
+                        }
+                    }
+                }
+                if (!Main.tile[num2, num].HasTile)
+                    Player.tileTargetY = num;
+            }
+
+            return canUse;
         }
 
         private void Player_CellphoneReturnHook(ILContext il)
@@ -55,9 +112,11 @@ namespace extraUtility
 
         public override void Unload()
         {
+            antigravRopeIDs.Clear();
             IL.Terraria.Main.TryInteractingWithMoneyTrough -= Main_TryInteractingWithChester;
             IL.Terraria.Player.HandleBeingInChestRange -= Player_HandleBeingInChesterRange;
             IL.Terraria.Player.ItemCheck_Inner -= Player_CellphoneReturnHook;
+            On.Terraria.Player.PlaceThing_Tiles_CheckRopeUsability -= Player_PlaceThing_Tiles_CheckRopeUsability;
         }
 
         // to prevent terraria from closing chester's inventory when it's not piggy bank
@@ -76,16 +135,15 @@ namespace extraUtility
                     {
                         if (slot.netID == ItemID.DefendersForge && slot.favorited)
                         {
-                            return -4;
+                            returnValue = -4;
+                            break;
                         }
                         if (slot.netID == ItemID.Safe && slot.favorited)
                         {
-                            return -3;
+                            returnValue = -3;
                         }
                     }
-                    return -2;
                 }
-
                 return returnValue;
             });
 
@@ -98,7 +156,7 @@ namespace extraUtility
             while (c.TryGotoNext(MoveType.After, i => i.MatchLdcI4(-2)))
             {
                 c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<int, Projectile, int>>((returnValue, projectile) =>
+                c.EmitDelegate<Func<int, Terraria.Projectile, int>>((returnValue, projectile) =>
                 {
                     if (projectile.type == 960)
                     {
@@ -106,14 +164,14 @@ namespace extraUtility
                         {
                             if (slot.netID == ItemID.DefendersForge && slot.favorited)
                             {
-                                return -4;
+                                returnValue = -4;
+                                break;
                             }
                             if (slot.netID == ItemID.Safe && slot.favorited)
                             {
-                                return -3;
+                                returnValue = -3;
                             }
                         }
-                        return -2;
                     }
                     return returnValue;
                 });
@@ -216,7 +274,7 @@ namespace extraUtility
             }
         }
     }
-    public class exUtilSystem : ModSystem
+    public class ExUtilSystem : ModSystem
     {
         public override void AddRecipes()
         {

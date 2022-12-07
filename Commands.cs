@@ -1,7 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria;
+using ReLogic.OS;
 
-namespace extraUtility
+namespace ExtraUtility
 {
     public class ChangeNameCommand : ModCommand
     {
@@ -30,5 +35,37 @@ namespace extraUtility
         {
             caller.Player.lastDeathPostion = caller.Player.Bottom;
         }
+    }
+    public class CopyCharacterTemplateCommand : ModCommand
+    {
+        public override CommandType Type => CommandType.Chat;
+        public override string Command => "copyCharacter";
+        public override string Usage => "/copyCharacter";
+        public override string Description => "Copies your character template to your clipboard";
+        public override void Action(CommandCaller caller, string input, string[] args)
+        {
+            Player player = caller.Player; 
+            string text = JsonConvert.SerializeObject(new Dictionary<string, object> {
+                { "version", 1 },
+                { "hairStyle", player.hair },
+                { "clothingStyle", player.skinVariant },
+                { "hairColor", GetHexText(player.hairColor) },
+                { "eyeColor", GetHexText(player.eyeColor) },
+                { "skinColor", GetHexText(player.skinColor) },
+                { "shirtColor", GetHexText(player.shirtColor) },
+                { "underShirtColor", GetHexText(player.underShirtColor) },
+                { "pantsColor", GetHexText(player.pantsColor) },
+                { "shoeColor", GetHexText(player.shoeColor) }          }, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto,
+                    MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead,
+                    Formatting = Formatting.Indented
+                });
+
+            Terraria.GameInput.PlayerInput.PrettyPrintProfiles(ref text);
+            Platform.Get<IClipboard>().Value = text;
+            Main.NewText("Copied character look to clipboard");
+        }
+        static string GetHexText(Color pendingColor) => "#" + pendingColor.Hex3().ToUpper();
     }
 }

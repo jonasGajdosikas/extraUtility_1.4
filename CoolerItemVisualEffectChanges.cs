@@ -8,13 +8,18 @@ using System.Reflection;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace extraUtility
+namespace ExtraUtility
 {
 
     [ExtendsFromMod("CoolerItemVisualEffect")] // Guarantee load only if mod present
     public class CoolerItemVisualEffectChanges : ILoadable
     {
         List<Tuple<MethodInfo, ILContext.Manipulator>> ilChanges = new();
+
+        public bool IsLoadingEnabled(Mod mod)
+        {
+            return ModLoader.TryGetMod("CoolerItemVisualEffect", out _) && false;
+        }
 
         public void Load(Mod mod)
         {

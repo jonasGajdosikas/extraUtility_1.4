@@ -4,14 +4,14 @@ using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
 using Microsoft.Xna.Framework;
 
-namespace extraUtility.Items
+namespace ExtraUtility.Items
 {
     public class DeathRecallPot : ModItem
     {
         public override void SetStaticDefaults() 
         {
-            DisplayName.SetDefault("Grave Recall Potion"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-            Tooltip.SetDefault("Drink the potion to return to your last death point");
+            DisplayName.SetDefault($"{{$Mods.ExUtil.DeathRecallPot.Name}}");
+            Tooltip.SetDefault($"{{$Mods.ExUtil.DeathRecallPot.Tooltip}}");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 20;
         }
 
@@ -28,9 +28,8 @@ namespace extraUtility.Items
         public override void AddRecipes() 
         {
             CreateRecipe().
-                AddIngredient(ItemID.BottledWater).
-                AddIngredient(ItemID.SpecularFish).
-                AddRecipeGroup(exUtilSystem.AnyPoorTomb).
+                AddIngredient(ItemID.RecallPotion).
+                AddRecipeGroup(ExUtilSystem.AnyPoorTomb).
                 AddTile(TileID.DemonAltar).
                 Register();
             /**

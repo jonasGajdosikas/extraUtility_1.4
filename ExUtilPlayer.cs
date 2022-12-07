@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
-using extraUtility.Items;
+using ExtraUtility.Items;
 
-namespace extraUtility
+namespace ExtraUtility
 {
     public class ExUtilPlayer : ModPlayer
     {
         static List<int> nonPlantCuttables = new List<int>(new int[] { 28, 444, 231 });
         public bool WithersPlants;
         public bool hasPocketPylon;
-
+        public bool IsHoldingAntigravRope =>
+            ExtraUtility.antigravRopeIDs.Contains(Player.inventory[Player.selectedItem].type);
         public void ReturnToDeathPoint()
         {
             Player.RemoveAllGrapplingHooks();

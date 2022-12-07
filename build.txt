@@ -1,6 +1,6 @@
 displayName = Utility Accessories
 author = 20jonas02
-version = 0.6.3.0
+version = 0.6.3.3
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, .gitattribustes, .gitignore, workshop.json
 weakReferences = CoolerItemVisualEffect
 includeSource = true

@@ -3,13 +3,14 @@ using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using Terraria.ID;
 
-namespace extraUtility.Items
+namespace ExtraUtility.Items
 {
     public class PocketPylon : ModItem
     {
         public override void SetStaticDefaults()
         {
-            base.Tooltip.SetDefault("Teleport to any pylon, no matter where you are");
+            DisplayName.SetDefault($"{{$Mods.ExUtil.PocketPylon.Name}}");
+            Tooltip.SetDefault($"{{$Mods.ExUtil.PocketPylon.Tooltip}}");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
         public override void AddRecipes()

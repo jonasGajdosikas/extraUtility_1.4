@@ -4,16 +4,14 @@ using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
 using Microsoft.Xna.Framework;
 
-namespace extraUtility.Items
+namespace ExtraUtility.Items
 {
     class Herbicide : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Herbicide Potion"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-            Tooltip.SetDefault("Withers nearby plants\n" +
-                "For better Korruptd traversal\n" +
-                "Does not heal corona");
+            DisplayName.SetDefault($"{{$Mods.ExUtil.Herbicide.Name}}"); 
+            Tooltip.SetDefault($"{{$Mods.ExUtil.Herbicide.Tooltip}}");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 20;
         }
         public override void SetDefaults()
@@ -37,7 +35,7 @@ namespace extraUtility.Items
             CreateRecipe()
                 .AddIngredient(ItemID.BottledWater)
                 .AddIngredient(ItemID.Deathweed)
-                .AddRecipeGroup(exUtilSystem.AnyCopperOre)
+                .AddRecipeGroup(ExUtilSystem.AnyCopperOre)
                 .AddTile(TileID.Bottles)
                 .Register();
         }

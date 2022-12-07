@@ -6,7 +6,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 
-namespace extraUtility.StatusEffects
+namespace ExtraUtility.StatusEffects
 {
     class Withering : ModBuff
     {
@@ -40,10 +40,7 @@ namespace extraUtility.StatusEffects
         }
         protected override void Draw(ref PlayerDrawSet drawInfo)
         {
-            if (witheRingTexture == null)
-            {
-                witheRingTexture = ModContent.Request<Texture2D>("extraUtility/StatusEffects/Withering_Spritesheet");
-            }
+            witheRingTexture ??= ModContent.Request<Texture2D>("extraUtility/StatusEffects/Withering_Spritesheet");
             WitherFXplayer modPlayer = drawInfo.drawPlayer.GetModPlayer<WitherFXplayer>();
             float ringScale = 1f * scaleDecrease;
             float deltaScale = 0.1f * scaleDecrease;
@@ -63,7 +60,7 @@ namespace extraUtility.StatusEffects
             }
             if (!Main.gamePaused && Main.instance.IsActive)
             {
-                modPlayer.witheRingRot += 0.05f;
+                modPlayer.witheRingRot += 1f / 60f;
             }
             if (modPlayer.witheRingRot > (float)Math.PI * 2f)
             {
@@ -92,7 +89,7 @@ namespace extraUtility.StatusEffects
                     SpriteEffects.None,												//effects
                     0																//layer
                 ));
-                Main.NewText("added DrawData " + j + " to cache");
+                //Main.NewText("added DrawData " + j + " to cache");
             }
         }
     }
